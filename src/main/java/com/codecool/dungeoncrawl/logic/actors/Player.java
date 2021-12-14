@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class Player extends Actor {
     public Player(Cell cell) {
         super(cell);
+        health = 100;
     }
 
     private ArrayList<Item> inventory = new ArrayList();
