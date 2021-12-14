@@ -2,6 +2,7 @@ package com.codecool.dungeoncrawl.logic.actors;
 
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.items.Item;
+import com.codecool.dungeoncrawl.logic.items.Key;
 import com.codecool.dungeoncrawl.logic.items.Potion;
 
 import java.util.ArrayList;
@@ -47,5 +48,13 @@ public class Player extends Actor {
             }
         }
         return res;
+    }
+    public boolean isHaveKey() {
+        for (Item item : inventory) {
+            if (item.getClass() == Key.class) {
+                return true;
+            }
+        }
+        return false;
     }
 }
