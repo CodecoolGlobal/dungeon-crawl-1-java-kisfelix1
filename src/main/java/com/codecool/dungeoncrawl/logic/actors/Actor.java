@@ -5,8 +5,8 @@ import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.Drawable;
 
 public abstract class Actor implements Drawable {
-    private Cell cell;
-    private int health = 10;
+    protected Cell cell;
+    protected int health = 20;
 
     public Actor(Cell cell) {
         this.cell = cell;
@@ -15,15 +15,36 @@ public abstract class Actor implements Drawable {
 
     public void move(int dx, int dy) {
         Cell nextCell = cell.getNeighbor(dx, dy);
-        if (canBeSteppedAt(nextCell)) {
+        if(isActorOnCell(nextCell)){
+            attackActor(nextCell.getActor());
+        }
+        else if (!isWallOnCell(nextCell)) {
             cell.setActor(null);
             nextCell.setActor(this);
             cell = nextCell;
         }
     }
 
-    private boolean canBeSteppedAt(Cell nextCell) {
-        return !nextCell.getType().equals(CellType.WALL) && nextCell.getActor() == null;
+    protected void attackActor(Actor actorToAttack){
+        actorToAttack.modifyHealth(-10);
+        if (actorToAttack.getCell().getActor() != null){
+            modifyHealth(-5);
+        }
+    }
+
+    public void modifyHealth(int amountOfHealth){
+        health += amountOfHealth;
+        if (health <= 0){
+            cell.setActor(null);
+        }
+    }
+
+    private boolean isActorOnCell(Cell nextCell) {
+        return nextCell.getActor() != null;
+    }
+
+    private boolean isWallOnCell(Cell nextCell) {
+        return nextCell.getType().equals(CellType.WALL);
     }
 
     public int getHealth() {
