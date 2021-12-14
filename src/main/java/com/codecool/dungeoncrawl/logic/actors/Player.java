@@ -2,6 +2,7 @@ package com.codecool.dungeoncrawl.logic.actors;
 
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.items.Item;
+import com.codecool.dungeoncrawl.logic.items.Potion;
 
 import java.util.ArrayList;
 
@@ -29,5 +30,14 @@ public class Player extends Actor {
             giveToInventory(cell.getItem());
             cell.deleteItem();
         }
+    }
+    public int getPotionNumber() {
+        int res = 0;
+        for (Item item : inventory) {
+            if (item.getClass() == Potion.class) {
+                res++;
+            }
+        }
+        return res;
     }
 }
