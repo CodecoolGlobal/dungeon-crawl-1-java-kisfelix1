@@ -17,8 +17,14 @@ public class Player extends Actor {
         return "player";
     }
 
-    public void consumeItem() {
-
+    public void consumeHpBottle() {
+        int consumed =0;
+        for (Item item : inventory) {
+            if (item.getClass() == Potion.class && consumed<1) {
+                inventory.remove(item);
+                consumed++;
+            }
+        }
     }
 
     private void giveToInventory(Item item) {

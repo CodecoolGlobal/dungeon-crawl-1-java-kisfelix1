@@ -75,6 +75,9 @@ public class Main extends Application {
                 map.getPlayer().pickUpItem();
                 refresh();
                 break;
+            case H:
+                map.getPlayer().consumeHpBottle();
+                refresh();
         }
     }
 
