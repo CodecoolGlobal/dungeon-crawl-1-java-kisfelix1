@@ -1,19 +1,21 @@
 package com.codecool.dungeoncrawl.logic.actors;
 
 import com.codecool.dungeoncrawl.logic.Cell;
-import com.codecool.dungeoncrawl.logic.items.Item;
-import com.codecool.dungeoncrawl.logic.items.Key;
-import com.codecool.dungeoncrawl.logic.items.Potion;
+import com.codecool.dungeoncrawl.logic.items.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Player extends Actor {
+    private HashMap<String, Item> equipment = new HashMap<>() {{
+        put("hand", null);
+    }};
+    private ArrayList<Item> inventory = new ArrayList<>();
+
     public Player(Cell cell) {
         super(cell);
         health = 100;
     }
-
-    private ArrayList<Item> inventory = new ArrayList<>();
 
     public String getTileName() {
         return "player";
@@ -36,7 +38,11 @@ public class Player extends Actor {
 
     public void pickUpItem() {
         if (cell.getItem() != null) {
-            giveToInventory(cell.getItem());
+            if (cell.getItem() instanceof Equippable) {
+                setEquipment((Equippable)cell.getItem());
+            } else {
+                giveToInventory(cell.getItem());
+            }
             cell.deleteItem();
         }
     }
@@ -56,5 +62,17 @@ public class Player extends Actor {
             }
         }
         return false;
+    }
+
+    public Item getEquipment(String equipmentPart) {
+        return equipment.get(equipmentPart);
+    }
+
+    public String getEquipmentName(String equipmentPart) {
+        return ((Equippable)getEquipment(equipmentPart)).getEquipmentName();
+    }
+
+    public void setEquipment(Equippable item) {
+        this.equipment.put(item.getEquipmentSlot(), (Item)item);
     }
 }
