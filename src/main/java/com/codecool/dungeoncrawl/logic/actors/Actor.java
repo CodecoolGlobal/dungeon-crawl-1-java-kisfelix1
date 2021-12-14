@@ -13,17 +13,7 @@ public abstract class Actor implements Drawable {
         this.cell.setActor(this);
     }
 
-    public void move(int dx, int dy) {
-        Cell nextCell = cell.getNeighbor(dx, dy);
-        if(isActorOnCell(nextCell)){
-            attackActor(nextCell.getActor());
-        }
-        else if (!isWallOnCell(nextCell)) {
-            cell.setActor(null);
-            nextCell.setActor(this);
-            cell = nextCell;
-        }
-    }
+    public abstract void move(int dx, int dy);
 
     protected void attackActor(Actor actorToAttack){
         actorToAttack.modifyHealth(-10);
@@ -39,11 +29,11 @@ public abstract class Actor implements Drawable {
         }
     }
 
-    private boolean isActorOnCell(Cell nextCell) {
+    protected boolean isActorOnCell(Cell nextCell) {
         return nextCell.getActor() != null;
     }
 
-    private boolean isWallOnCell(Cell nextCell) {
+    protected boolean isWallOnCell(Cell nextCell) {
         return nextCell.getType().equals(CellType.WALL);
     }
 
