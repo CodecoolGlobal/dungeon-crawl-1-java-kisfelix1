@@ -18,4 +18,8 @@ public class Potion extends Item implements Consumable{
     @Override
     public void consumeItem(Player player) {
     }
+
+    public int getHealthOnConsume() {
+        return healthOnConsume;
+    }
 }

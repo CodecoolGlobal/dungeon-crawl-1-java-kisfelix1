@@ -12,19 +12,20 @@ public class Player extends Actor {
         health = 100;
     }
 
-    private ArrayList<Item> inventory = new ArrayList();
+    private ArrayList<Item> inventory = new ArrayList<>();
 
     public String getTileName() {
         return "player";
     }
 
     public void consumeHpBottle() {
-        int consumed =0;
-        for (Item item : inventory) {
-            if (item.getClass() == Potion.class && consumed<1) {
-                inventory.remove(item);
-                consumed++;
-            }
+        int index = 0;
+        while (index < inventory.size() && inventory.get(index).getClass() != Potion.class) {
+            index++;
+        }
+        if (index < inventory.size()) {
+            modifyHealth(((Potion)inventory.get(index)).getHealthOnConsume());
+            inventory.remove(index);
         }
     }
 
