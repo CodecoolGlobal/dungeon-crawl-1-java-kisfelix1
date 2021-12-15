@@ -64,6 +64,16 @@ public class Player extends Actor {
         return false;
     }
 
+    public void removeKey() {
+        int index = 99;  // For IntelliJ's fear from this index integer might be not initialized I gave it a random number
+        for (Item item : inventory) {
+            if (item.getClass() == Key.class) {
+                index = inventory.indexOf(item);
+            }
+        }
+        inventory.remove(index);
+    }
+
     public Item getEquipment(String equipmentPart) {
         return equipment.get(equipmentPart);
     }
