@@ -7,10 +7,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Player extends Actor {
-    private HashMap<String, Item> equipment = new HashMap<>() {{
+    private final HashMap<String, Item> equipment = new HashMap<>() {{
         put("hand", null);
     }};
-    private ArrayList<Item> inventory = new ArrayList<>();
+    private final ArrayList<Item> inventory = new ArrayList<>();
 
     public Player(Cell cell) {
         super(cell);

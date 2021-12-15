@@ -15,31 +15,38 @@ public abstract class Actor implements Drawable {
 
     public void move(int dx, int dy) {
         Cell nextCell = cell.getNeighbor(dx, dy);
-        if(isActorOnCell(nextCell)){
+        if (isActorOnCell(nextCell) && considerActorOnCell(nextCell)) {
             attackActor(nextCell.getActor());
-        }
-        else if (isClosedDoorOnCell(nextCell)) {
-            if (((Player)cell.getActor()).isHaveKey()) {
+        } else if (isClosedDoorOnCell(nextCell)) {
+            if (((Player) cell.getActor()).isHaveKey()) {
                 nextCell.setType(CellType.OPEN);
-                ((Player)cell.getActor()).removeKey();
+                ((Player) cell.getActor()).removeKey();
             }
-        }
-        else if (!isWallOnCell(nextCell)) {
+        } else if (considerWallOnCell(nextCell) && !isActorOnCell(nextCell)) {
             cell.setActor(null);
             nextCell.setActor(this);
             cell = nextCell;
         }
     }
-    protected void attackActor(Actor actorToAttack){
+
+    private boolean considerActorOnCell(Cell nextCell) {
+        return !nextCell.getActor().getClass().equals(this.getClass());
+    }
+
+    private boolean considerWallOnCell(Cell nextCell) {
+        return !isWallOnCell(nextCell) || this.getClass().equals(Ghost.class);
+    }
+
+    protected void attackActor(Actor actorToAttack) {
         actorToAttack.modifyHealth(-10);
-        if (actorToAttack.getCell().getActor() != null){
+        if (actorToAttack.getCell().getActor() != null) {
             modifyHealth(-5);
         }
     }
 
-    public void modifyHealth(int amountOfHealth){
+    public void modifyHealth(int amountOfHealth) {
         health += amountOfHealth;
-        if (!isAlive()){
+        if (!isAlive()) {
             cell.setActor(null);
         }
     }
