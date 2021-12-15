@@ -1,12 +1,7 @@
 package com.codecool.dungeoncrawl.logic;
 
-import com.codecool.dungeoncrawl.logic.actors.Enemy;
-import com.codecool.dungeoncrawl.logic.actors.Player;
-import com.codecool.dungeoncrawl.logic.actors.Skeleton;
-import com.codecool.dungeoncrawl.logic.items.Dagger;
-import com.codecool.dungeoncrawl.logic.items.Key;
-import com.codecool.dungeoncrawl.logic.items.Potion;
-import com.codecool.dungeoncrawl.logic.items.Sword;
+import com.codecool.dungeoncrawl.logic.actors.*;
+import com.codecool.dungeoncrawl.logic.items.*;
 
 import java.io.InputStream;
 import java.util.List;
@@ -19,7 +14,7 @@ public class MapLoader {
         int width = scanner.nextInt();
         int height = scanner.nextInt();
 
-        scanner.nextLine(); // empty line
+        scanner.nextLine();
 
         GameMap map = new GameMap(width, height, CellType.EMPTY);
         for (int y = 0; y < height; y++) {
@@ -41,6 +36,14 @@ public class MapLoader {
                             cell.setType(CellType.FLOOR);
                             enemies.add(new Skeleton(cell));
                             break;
+                        case 'g':
+                            cell.setType(CellType.FLOOR);
+                            enemies.add(new Ghost(cell, map));
+                            break;
+                        case 'r':
+                            cell.setType(CellType.FLOOR);
+                            enemies.add(new Protector(cell));
+                            break;
                         case '@':
                             cell.setType(CellType.FLOOR);
                             map.setPlayer(new Player(cell));
@@ -52,6 +55,10 @@ public class MapLoader {
                         case 'k':
                             cell.setType(CellType.FLOOR);
                             new Key(cell);
+                            break;
+                        case 't':
+                            cell.setType(CellType.FLOOR);
+                            new Decoration(cell);
                             break;
                         case 'S':
                             cell.setType(CellType.FLOOR);

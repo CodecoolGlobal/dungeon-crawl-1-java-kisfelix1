@@ -23,4 +23,14 @@ public class Sword extends Item implements Equippable{
     public String getEquipmentName() {
         return "Sword";
     }
+
+    @Override
+    public float getAttackModifier() {
+        return 1.4f;
+    }
+
+    @Override
+    public float getDefenseModifier() {
+        return 1;
+    }
 }
