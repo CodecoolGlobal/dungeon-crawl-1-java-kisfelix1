@@ -3,6 +3,7 @@ package com.codecool.dungeoncrawl;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
+import com.codecool.dungeoncrawl.logic.actors.Enemy;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -18,8 +19,11 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+
 public class Main extends Application {
-    GameMap map = MapLoader.loadMap();
+    ArrayList<Enemy> enemies = new ArrayList<>();
+    GameMap map = MapLoader.loadMap(enemies);
     Canvas canvas = new Canvas(
             map.getWidth() * Tiles.TILE_WIDTH,
             map.getHeight() * Tiles.TILE_WIDTH);
@@ -37,6 +41,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+
         GridPane ui = new GridPane();
         ui.setPrefWidth(200);
         ui.setPadding(new Insets(10));
@@ -107,6 +112,18 @@ public class Main extends Application {
                 refresh();
                 break;
         }
+        cleanDeadEnemies();
+        enemies.forEach(enemy -> enemy.aiMove());
+    }
+
+    private void cleanDeadEnemies() {
+        int index = 0;
+        while(index < enemies.size() && enemies.get(index).isAlive()){
+            index++;
+        }
+        if(index < enemies.size()){
+            enemies.remove(index);
+        }
     }
 
     private void refresh() {
@@ -119,6 +136,8 @@ public class Main extends Application {
                     Tiles.drawTile(context, cell.getActor(), x, y);
                 } else if (cell.getItem() != null) {
                     Tiles.drawTile(context, cell.getItem(), x, y);
+                } else if (cell.getDecoration() != null) {
+                    Tiles.drawTile(context, cell.getDecoration(), x, y);
                 } else {
                     Tiles.drawTile(context, cell, x, y);
                 }

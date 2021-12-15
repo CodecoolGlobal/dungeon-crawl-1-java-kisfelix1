@@ -7,10 +7,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Player extends Actor {
-    private HashMap<String, Item> equipment = new HashMap<>() {{
+    private final HashMap<String, Item> equipment = new HashMap<>() {{
         put("hand", null);
     }};
-    private ArrayList<Item> inventory = new ArrayList<>();
+    private final ArrayList<Item> inventory = new ArrayList<>();
 
     public Player(Cell cell) {
         super(cell);
@@ -27,7 +27,7 @@ public class Player extends Actor {
             index++;
         }
         if (index < inventory.size()) {
-            modifyHealth(((Potion)inventory.get(index)).getHealthOnConsume());
+            modifyHealth(((Potion) inventory.get(index)).getHealthOnConsume());
             inventory.remove(index);
         }
     }
@@ -46,6 +46,7 @@ public class Player extends Actor {
             }
         }
     }
+
     public int getPotionNumber() {
         int res = 0;
         for (Item item : inventory) {
