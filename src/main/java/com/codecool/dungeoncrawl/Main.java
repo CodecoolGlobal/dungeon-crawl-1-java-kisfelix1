@@ -22,6 +22,7 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 
 public class Main extends Application {
+    private boolean isFestive = false;
     ArrayList<Enemy> enemies = new ArrayList<>();
     GameMap map = MapLoader.loadMap(enemies);
     Canvas canvas = new Canvas(
@@ -109,6 +110,10 @@ public class Main extends Application {
                 map.getPlayer().pickUpItem();
                 refresh();
                 break;
+            case T:
+                isFestive = !isFestive;
+                refresh();
+                break;
             case H:
                 map.getPlayer().consumeHpBottle();
                 refresh();
@@ -135,13 +140,13 @@ public class Main extends Application {
             for (int y = 0; y < map.getHeight(); y++) {
                 Cell cell = map.getCell(x, y);
                 if (cell.getActor() != null) {
-                    Tiles.drawTile(context, cell.getActor(), x, y);
+                    Tiles.drawTile(context, cell.getActor(), x, y, isFestive);
                 } else if (cell.getItem() != null) {
-                    Tiles.drawTile(context, cell.getItem(), x, y);
+                    Tiles.drawTile(context, cell.getItem(), x, y, isFestive);
                 } else if (cell.getDecoration() != null) {
-                    Tiles.drawTile(context, cell.getDecoration(), x, y);
+                    Tiles.drawTile(context, cell.getDecoration(), x, y, isFestive);
                 } else {
-                    Tiles.drawTile(context, cell, x, y);
+                    Tiles.drawTile(context, cell, x, y, isFestive);
                 }
             }
         }

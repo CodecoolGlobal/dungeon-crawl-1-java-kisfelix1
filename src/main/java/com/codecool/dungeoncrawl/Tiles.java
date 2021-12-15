@@ -10,10 +10,13 @@ import java.util.Map;
 public class Tiles {
     public static int TILE_WIDTH = 32;
 
-    private static Image tileset = new Image("/tiles.png", 543 * 2, 543 * 2, true, false);
+    private static final Image tileset = new Image("/boring-tiles.png", 543 * 2, 543 * 2, true, false);
+    private static final Image awesomeTileset = new Image("/tiles.png", 543 * 2, 543 * 2, true, false);
     private static Map<String, Tile> tileMap = new HashMap<>();
+
     public static class Tile {
         public final int x, y, w, h;
+
         Tile(int i, int j) {
             x = i * (TILE_WIDTH + 2);
             y = j * (TILE_WIDTH + 2);
@@ -39,9 +42,15 @@ public class Tiles {
         tileMap.put("christmasTree", new Tile(1, 1));
     }
 
-    public static void drawTile(GraphicsContext context, Drawable d, int x, int y) {
+    public static void drawTile(GraphicsContext context, Drawable d, int x, int y, boolean isFestive) {
         Tile tile = tileMap.get(d.getTileName());
-        context.drawImage(tileset, tile.x, tile.y, tile.w, tile.h,
-                x * TILE_WIDTH, y * TILE_WIDTH, TILE_WIDTH, TILE_WIDTH);
+        if (!isFestive) {
+            context.drawImage(tileset, tile.x, tile.y, tile.w, tile.h,
+                    x * TILE_WIDTH, y * TILE_WIDTH, TILE_WIDTH, TILE_WIDTH);
+        } else {
+            context.drawImage(awesomeTileset, tile.x, tile.y, tile.w, tile.h,
+                    x * TILE_WIDTH, y * TILE_WIDTH, TILE_WIDTH, TILE_WIDTH);
+        }
+
     }
 }
