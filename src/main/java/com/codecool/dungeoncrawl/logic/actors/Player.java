@@ -42,8 +42,8 @@ public class Player extends Actor {
                 setEquipment((Equippable)cell.getItem());
             } else {
                 giveToInventory(cell.getItem());
+                cell.deleteItem();
             }
-            cell.deleteItem();
         }
     }
     public int getPotionNumber() {
@@ -72,7 +72,13 @@ public class Player extends Actor {
         return ((Equippable)getEquipment(equipmentPart)).getEquipmentName();
     }
 
-    public void setEquipment(Equippable item) {
-        this.equipment.put(item.getEquipmentSlot(), (Item)item);
+    public void setEquipment(Equippable equippable) {
+        if (this.equipment.get(equippable.getEquipmentSlot()) != null) {
+            cell.setItem(this.equipment.get(equippable.getEquipmentSlot()));
+        }
+        else{
+            cell.deleteItem();
+        }
+        this.equipment.put(equippable.getEquipmentSlot(), (Item)equippable);
     }
 }
