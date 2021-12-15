@@ -1,6 +1,7 @@
 package com.codecool.dungeoncrawl.logic;
 
 import com.codecool.dungeoncrawl.logic.actors.Actor;
+import com.codecool.dungeoncrawl.logic.items.Decoration;
 import com.codecool.dungeoncrawl.logic.items.Item;
 
 public class Cell implements Drawable {
@@ -8,6 +9,7 @@ public class Cell implements Drawable {
     private Actor actor;
     private Item item;
     private GameMap gameMap;
+    private Decoration decoration;
     private int x, y;
 
     Cell(GameMap gameMap, int x, int y, CellType type) {
@@ -15,6 +17,14 @@ public class Cell implements Drawable {
         this.x = x;
         this.y = y;
         this.type = type;
+    }
+
+    public Decoration getDecoration() {
+        return decoration;
+    }
+
+    public void setDecoration(Decoration decoration) {
+        this.decoration = decoration;
     }
 
     public CellType getType() {
