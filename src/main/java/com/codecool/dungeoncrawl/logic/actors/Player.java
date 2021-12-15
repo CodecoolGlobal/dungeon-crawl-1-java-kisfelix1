@@ -1,18 +1,21 @@
 package com.codecool.dungeoncrawl.logic.actors;
 
 import com.codecool.dungeoncrawl.logic.Cell;
-import com.codecool.dungeoncrawl.logic.items.Item;
-import com.codecool.dungeoncrawl.logic.items.Potion;
+import com.codecool.dungeoncrawl.logic.items.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Player extends Actor {
+    private HashMap<String, Item> equipment = new HashMap<>() {{
+        put("hand", null);
+    }};
+    private ArrayList<Item> inventory = new ArrayList<>();
+
     public Player(Cell cell) {
         super(cell);
         health = 100;
     }
-
-    private ArrayList<Item> inventory = new ArrayList<>();
 
     public String getTileName() {
         return "player";
@@ -24,7 +27,7 @@ public class Player extends Actor {
             index++;
         }
         if (index < inventory.size()) {
-            modifyHealth(((Potion)inventory.get(index)).getHealthOnConsume());
+            modifyHealth(((Potion) inventory.get(index)).getHealthOnConsume());
             inventory.remove(index);
         }
     }
@@ -35,10 +38,15 @@ public class Player extends Actor {
 
     public void pickUpItem() {
         if (cell.getItem() != null) {
-            giveToInventory(cell.getItem());
-            cell.deleteItem();
+            if (cell.getItem() instanceof Equippable) {
+                setEquipment((Equippable)cell.getItem());
+            } else {
+                giveToInventory(cell.getItem());
+                cell.deleteItem();
+            }
         }
     }
+
     public int getPotionNumber() {
         int res = 0;
         for (Item item : inventory) {
@@ -47,5 +55,41 @@ public class Player extends Actor {
             }
         }
         return res;
+    }
+    public boolean isHaveKey() {
+        for (Item item : inventory) {
+            if (item.getClass() == Key.class) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void removeKey() {
+        int index = 99;  // For IntelliJ's fear from this index integer might be not initialized I gave it a random number
+        for (Item item : inventory) {
+            if (item.getClass() == Key.class) {
+                index = inventory.indexOf(item);
+            }
+        }
+        inventory.remove(index);
+    }
+
+    public Item getEquipment(String equipmentPart) {
+        return equipment.get(equipmentPart);
+    }
+
+    public String getEquipmentName(String equipmentPart) {
+        return ((Equippable)getEquipment(equipmentPart)).getEquipmentName();
+    }
+
+    public void setEquipment(Equippable equippable) {
+        if (this.equipment.get(equippable.getEquipmentSlot()) != null) {
+            cell.setItem(this.equipment.get(equippable.getEquipmentSlot()));
+        }
+        else{
+            cell.deleteItem();
+        }
+        this.equipment.put(equippable.getEquipmentSlot(), (Item)equippable);
     }
 }

@@ -3,6 +3,7 @@ package com.codecool.dungeoncrawl;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
+import com.codecool.dungeoncrawl.logic.actors.Enemy;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -15,14 +16,19 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+
 public class Main extends Application {
-    GameMap map = MapLoader.loadMap();
+    ArrayList<Enemy> enemies = new ArrayList<>();
+    GameMap map = MapLoader.loadMap(enemies);
     Canvas canvas = new Canvas(
             map.getWidth() * Tiles.TILE_WIDTH,
             map.getHeight() * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
     Label potionLabel = new Label();
+    Label keyLabel = new Label();
+    Label handLabel = new Label();
 
     public static void main(String[] args) {
         launch(args);
@@ -36,8 +42,16 @@ public class Main extends Application {
 
         ui.add(new Label("Health: "), 0, 0);
         ui.add(healthLabel, 1, 0);
-        ui.add(new Label("Potions: "), 0, 1);
-        ui.add(potionLabel, 1, 1);
+        ui.add(new Label(" "),0,1);
+        ui.add(new Label("Inventory:"),0, 2);
+        ui.add(new Label("Potions: "), 0, 3);
+        ui.add(potionLabel, 1, 3);
+        ui.add(new Label("Keys: "),0, 4);
+        ui.add(keyLabel, 1, 4);
+        ui.add(new Label(" "),0,5);
+        ui.add(new Label("Equipment:"),0,6);
+        ui.add(new Label("Hand: "), 0, 7);
+        ui.add(handLabel, 1, 7);
 
         BorderPane borderPane = new BorderPane();
 
@@ -47,6 +61,7 @@ public class Main extends Application {
         Scene scene = new Scene(borderPane);
         primaryStage.setScene(scene);
         refresh();
+        scene.setOnKeyPressed(this::onKeyPressed);
         scene.setOnKeyPressed(this::onKeyPressed);
 
         primaryStage.setTitle("Dungeon Crawl");
@@ -80,6 +95,18 @@ public class Main extends Application {
                 refresh();
                 break;
         }
+        cleanDeadEnemies();
+        enemies.forEach(enemy -> enemy.aiMove());
+    }
+
+    private void cleanDeadEnemies() {
+        int index = 0;
+        while(index < enemies.size() && enemies.get(index).isAlive()){
+            index++;
+        }
+        if(index < enemies.size()){
+            enemies.remove(index);
+        }
     }
 
     private void refresh() {
@@ -99,5 +126,9 @@ public class Main extends Application {
         }
         healthLabel.setText("" + map.getPlayer().getHealth());
         potionLabel.setText("" + map.getPlayer().getPotionNumber());
+        keyLabel.setText("" + (map.getPlayer().isHaveKey() ? "1" : "0"));
+        handLabel.setText("" + (map.getPlayer().getEquipment("hand") == null ?
+                "Empty" :
+                map.getPlayer().getEquipmentName("hand")));
     }
 }
