@@ -22,12 +22,14 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 
 public class Main extends Application {
+    int centerX;
+    int centerY;
     private boolean isFestive = false;
     ArrayList<Enemy> enemies = new ArrayList<>();
     GameMap map = MapLoader.loadMap(enemies);
     Canvas canvas = new Canvas(
-            map.getWidth() * Tiles.TILE_WIDTH,
-            map.getHeight() * Tiles.TILE_WIDTH);
+            Math.min(map.getWidth(), 45) * Tiles.TILE_WIDTH,
+            Math.min(map.getHeight(), 45) * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label nameLabel = new Label(map.getPlayer().getName());
     Label healthLabel = new Label();
@@ -43,12 +45,13 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-
+        centerX = (int) (canvas.getWidth() / (Tiles.TILE_WIDTH * 2));
+        centerY = (int) (canvas.getHeight() / (Tiles.TILE_WIDTH * 2));
         GridPane ui = new GridPane();
         ui.setPrefWidth(200);
         ui.setPadding(new Insets(10));
         ui.add(new Label("Name: "), 0, 0);
-        ui.add(nameLabel, 1,0);
+        ui.add(nameLabel, 1, 0);
         ui.add(new Label("Health: "), 0, 1);
         ui.add(healthLabel, 1, 1);
         ui.add(new Label(" "), 0, 1);
@@ -136,9 +139,11 @@ public class Main extends Application {
     private void refresh() {
         context.setFill(Color.BLACK);
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        for (int x = 0; x < map.getWidth(); x++) {
-            for (int y = 0; y < map.getHeight(); y++) {
-                Cell cell = map.getCell(x, y);
+        int xOffset = map.getPlayer().getX() < centerX ? 0 : map.getPlayer().getX() - centerX;
+        int yOffset = map.getPlayer().getY() < centerY ? 0 : map.getPlayer().getY() - centerY;
+        for (int x = 0; x + xOffset < map.getWidth(); x++) {
+            for (int y = 0; y + yOffset < map.getHeight(); y++) {
+                Cell cell = map.getCell(x + xOffset, y + yOffset);
                 if (cell.getActor() != null) {
                     Tiles.drawTile(context, cell.getActor(), x, y, isFestive);
                 } else if (cell.getItem() != null) {
