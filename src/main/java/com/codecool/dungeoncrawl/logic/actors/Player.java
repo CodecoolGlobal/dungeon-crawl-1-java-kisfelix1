@@ -12,19 +12,6 @@ public class Player extends Actor {
         health = 100;
     }
 
-    @Override
-    public void move(int dx, int dy) {
-        Cell nextCell = cell.getNeighbor(dx, dy);
-        if(isActorOnCell(nextCell)){
-            attackActor(nextCell.getActor());
-        }
-        else if (!isWallOnCell(nextCell)) {
-            cell.setActor(null);
-            nextCell.setActor(this);
-            cell = nextCell;
-        }
-    }
-
     private ArrayList<Item> inventory = new ArrayList<>();
 
     public String getTileName() {
@@ -37,7 +24,7 @@ public class Player extends Actor {
             index++;
         }
         if (index < inventory.size()) {
-            modifyHealth(((Potion)inventory.get(index)).getHealthOnConsume());
+            modifyHealth(((Potion) inventory.get(index)).getHealthOnConsume());
             inventory.remove(index);
         }
     }
@@ -52,6 +39,7 @@ public class Player extends Actor {
             cell.deleteItem();
         }
     }
+
     public int getPotionNumber() {
         int res = 0;
         for (Item item : inventory) {

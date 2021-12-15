@@ -3,6 +3,7 @@ package com.codecool.dungeoncrawl;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
+import com.codecool.dungeoncrawl.logic.actors.Enemy;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -15,8 +16,11 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+
 public class Main extends Application {
-    GameMap map = MapLoader.loadMap();
+    ArrayList<Enemy> enemies = new ArrayList<>();
+    GameMap map = MapLoader.loadMap(enemies);
     Canvas canvas = new Canvas(
             map.getWidth() * Tiles.TILE_WIDTH,
             map.getHeight() * Tiles.TILE_WIDTH);
@@ -47,6 +51,7 @@ public class Main extends Application {
         Scene scene = new Scene(borderPane);
         primaryStage.setScene(scene);
         refresh();
+        scene.setOnKeyPressed(this::onKeyPressed);
         scene.setOnKeyPressed(this::onKeyPressed);
 
         primaryStage.setTitle("Dungeon Crawl");
@@ -79,6 +84,18 @@ public class Main extends Application {
                 map.getPlayer().consumeHpBottle();
                 refresh();
                 break;
+        }
+        cleanDeadEnemies();
+        enemies.forEach(enemy -> enemy.aiMove());
+    }
+
+    private void cleanDeadEnemies() {
+        int index = 0;
+        while(index < enemies.size() && enemies.get(index).isAlive()){
+            index++;
+        }
+        if(index < enemies.size()){
+            enemies.remove(index);
         }
     }
 
