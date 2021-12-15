@@ -28,6 +28,7 @@ public class Main extends Application {
             map.getWidth() * Tiles.TILE_WIDTH,
             map.getHeight() * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
+    Label nameLabel = new Label(map.getPlayer().getName());
     Label healthLabel = new Label();
     Label potionLabel = new Label();
     Label keyLabel = new Label();
@@ -45,20 +46,21 @@ public class Main extends Application {
         GridPane ui = new GridPane();
         ui.setPrefWidth(200);
         ui.setPadding(new Insets(10));
-
-        ui.add(new Label("Health: "), 0, 0);
-        ui.add(healthLabel, 1, 0);
-        ui.add(new Label(" "),0,1);
-        ui.add(new Label("Inventory:"),0, 2);
+        ui.add(new Label("Name: "), 0, 0);
+        ui.add(nameLabel, 1,0);
+        ui.add(new Label("Health: "), 0, 1);
+        ui.add(healthLabel, 1, 1);
+        ui.add(new Label(" "), 0, 1);
+        ui.add(new Label("Inventory:"), 0, 2);
         ui.add(new Label("Potions: "), 0, 3);
         ui.add(potionLabel, 1, 3);
-        ui.add(new Label("Keys: "),0, 4);
+        ui.add(new Label("Keys: "), 0, 4);
         ui.add(keyLabel, 1, 4);
-        ui.add(new Label(" "),0,5);
-        ui.add(new Label("Equipment:"),0,6);
+        ui.add(new Label(" "), 0, 5);
+        ui.add(new Label("Equipment:"), 0, 6);
         ui.add(new Label("Hand: "), 0, 7);
         ui.add(handLabel, 1, 7);
-        ui.add(new Label(" "),0,8);
+        ui.add(new Label(" "), 0, 8);
         ui.add(pickUpButton, 0, 9);
         pickUpButton.setFocusTraversable(false);
         pickUpButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> handleKeyCode(KeyCode.F));
@@ -100,7 +102,7 @@ public class Main extends Application {
                 refresh();
                 break;
             case RIGHT:
-                map.getPlayer().move(1,0);
+                map.getPlayer().move(1, 0);
                 refresh();
                 break;
             case F:
@@ -118,10 +120,10 @@ public class Main extends Application {
 
     private void cleanDeadEnemies() {
         int index = 0;
-        while(index < enemies.size() && enemies.get(index).isAlive()){
+        while (index < enemies.size() && enemies.get(index).isAlive()) {
             index++;
         }
-        if(index < enemies.size()){
+        if (index < enemies.size()) {
             enemies.remove(index);
         }
     }

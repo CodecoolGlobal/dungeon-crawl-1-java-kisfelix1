@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Player extends Actor {
+    private final String name = "Hero";
     private final HashMap<String, Item> equipment = new HashMap<>() {{
         put("hand", null);
     }};
@@ -16,7 +17,9 @@ public class Player extends Actor {
         super(cell);
         health = 100;
     }
-
+    public String getName(){
+        return name;
+    }
     public String getTileName() {
         return "player";
     }
