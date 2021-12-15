@@ -8,8 +8,11 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -25,6 +28,8 @@ public class Main extends Application {
     Label potionLabel = new Label();
     Label keyLabel = new Label();
     Label handLabel = new Label();
+    Button pickUpButton = new Button("Pick Up Item (F)");
+    Button usePotionButton = new Button("Use Potion (H)");
 
     public static void main(String[] args) {
         launch(args);
@@ -48,6 +53,14 @@ public class Main extends Application {
         ui.add(new Label("Equipment:"),0,6);
         ui.add(new Label("Hand: "), 0, 7);
         ui.add(handLabel, 1, 7);
+        ui.add(new Label(" "),0,8);
+        ui.add(pickUpButton, 0, 9);
+        pickUpButton.setFocusTraversable(false);
+        pickUpButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> handleKeyCode(KeyCode.F));
+        ui.add(usePotionButton, 0, 10);
+        usePotionButton.setFocusTraversable(false);
+        usePotionButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> handleKeyCode(KeyCode.H));
+
 
         BorderPane borderPane = new BorderPane();
 
@@ -64,7 +77,11 @@ public class Main extends Application {
     }
 
     private void onKeyPressed(KeyEvent keyEvent) {
-        switch (keyEvent.getCode()) {
+        handleKeyCode(keyEvent.getCode());
+    }
+
+    private void handleKeyCode(KeyCode keyCode) {
+        switch (keyCode) {
             case UP:
                 map.getPlayer().move(0, -1);
                 refresh();
