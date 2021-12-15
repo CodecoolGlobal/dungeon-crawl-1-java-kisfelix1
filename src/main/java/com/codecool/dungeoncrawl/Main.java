@@ -27,6 +27,8 @@ public class Main extends Application {
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
     Label potionLabel = new Label();
+    Label keyLabel = new Label();
+    Label handLabel = new Label();
 
     public static void main(String[] args) {
         launch(args);
@@ -40,8 +42,16 @@ public class Main extends Application {
 
         ui.add(new Label("Health: "), 0, 0);
         ui.add(healthLabel, 1, 0);
-        ui.add(new Label("Potions: "), 0, 1);
-        ui.add(potionLabel, 1, 1);
+        ui.add(new Label(" "),0,1);
+        ui.add(new Label("Inventory:"),0, 2);
+        ui.add(new Label("Potions: "), 0, 3);
+        ui.add(potionLabel, 1, 3);
+        ui.add(new Label("Keys: "),0, 4);
+        ui.add(keyLabel, 1, 4);
+        ui.add(new Label(" "),0,5);
+        ui.add(new Label("Equipment:"),0,6);
+        ui.add(new Label("Hand: "), 0, 7);
+        ui.add(handLabel, 1, 7);
 
         BorderPane borderPane = new BorderPane();
 
@@ -116,5 +126,9 @@ public class Main extends Application {
         }
         healthLabel.setText("" + map.getPlayer().getHealth());
         potionLabel.setText("" + map.getPlayer().getPotionNumber());
+        keyLabel.setText("" + (map.getPlayer().isHaveKey() ? "1" : "0"));
+        handLabel.setText("" + (map.getPlayer().getEquipment("hand") == null ?
+                "Empty" :
+                map.getPlayer().getEquipmentName("hand")));
     }
 }

@@ -18,6 +18,12 @@ public abstract class Actor implements Drawable {
         if(isActorOnCell(nextCell)){
             attackActor(nextCell.getActor());
         }
+        else if (isClosedDoorOnCell(nextCell)) {
+            if (((Player)cell.getActor()).isHaveKey()) {
+                nextCell.setType(CellType.OPEN);
+                ((Player)cell.getActor()).removeKey();
+            }
+        }
         else if (!isWallOnCell(nextCell)) {
             cell.setActor(null);
             nextCell.setActor(this);
@@ -48,6 +54,10 @@ public abstract class Actor implements Drawable {
 
     protected boolean isWallOnCell(Cell nextCell) {
         return nextCell.getType().equals(CellType.WALL);
+    }
+
+    private boolean isClosedDoorOnCell(Cell nextCell) {
+        return nextCell.getType().equals(CellType.CLOSED);
     }
 
     public int getHealth() {

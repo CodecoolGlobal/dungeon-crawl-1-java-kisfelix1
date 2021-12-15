@@ -1,7 +1,6 @@
 package com.codecool.dungeoncrawl.logic.items;
 
 import com.codecool.dungeoncrawl.logic.Cell;
-import com.codecool.dungeoncrawl.logic.actors.Player;
 
 public class Potion extends Item implements Consumable{
     private final int healthOnConsume = 10;
@@ -13,10 +12,6 @@ public class Potion extends Item implements Consumable{
 
     public String getTileName() {
         return "potion";
-    }
-
-    @Override
-    public void consumeItem(Player player) {
     }
 
     public int getHealthOnConsume() {
