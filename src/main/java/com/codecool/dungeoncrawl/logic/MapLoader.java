@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Scanner;
 
 public class MapLoader {
-    public static GameMap loadMap(List<Enemy> enemies) {
-        InputStream is = MapLoader.class.getResourceAsStream("/map.txt");
+    public static GameMap loadMap(List<Enemy> enemies, String mapName) {
+        InputStream is = MapLoader.class.getResourceAsStream(mapName);
         Scanner scanner = new Scanner(is);
         int width = scanner.nextInt();
         int height = scanner.nextInt();
@@ -73,6 +73,9 @@ public class MapLoader {
                             break;
                         case 'C':
                             cell.setType(CellType.CLOSED);
+                            break;
+                        case 'L':
+                            cell.setType(CellType.STAIR);
                             break;
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");

@@ -22,7 +22,7 @@ public abstract class Actor implements Drawable {
                 nextCell.setType(CellType.OPEN);
                 ((Player) cell.getActor()).removeKey();
             }
-        } else if (considerWallOnCell(nextCell) && !isActorOnCell(nextCell)) {
+        }else if (considerWallOnCell(nextCell) && !isActorOnCell(nextCell)) {
             cell.setActor(null);
             nextCell.setActor(this);
             cell = nextCell;
