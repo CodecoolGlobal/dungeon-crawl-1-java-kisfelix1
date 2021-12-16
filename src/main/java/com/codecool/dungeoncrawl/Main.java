@@ -23,7 +23,7 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 
 public class Main extends Application {
-    private final static String[] maps = {"/map.txt", "/map2.txt"};
+    private final static String[] maps = {"/map.txt", "/map2.txt", "/lose.txt"};
     private int currentLevel = 0;
     int centerX;
     int centerY;
@@ -135,6 +135,16 @@ public class Main extends Application {
         cleanDeadEnemies();
         enemies.forEach(enemy -> enemy.aiMove());
         checkStairs();
+        checkPlayerHealth();
+    }
+
+    private void checkPlayerHealth() {
+        if(!map.getPlayer().isAlive()){
+            enemies = new ArrayList<>();
+            currentLevel = 2;
+            map = MapLoader.loadMap(enemies, maps[currentLevel]);
+            refresh();
+        }
     }
 
     private void checkStairs() {
