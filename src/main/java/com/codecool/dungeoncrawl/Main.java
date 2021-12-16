@@ -43,6 +43,7 @@ public class Main extends Application {
     Button usePotionButton = new Button("Use Potion (H)");
     Button festiveButton = new Button("CLICK ME (T)");
     Label festiveText = new Label();
+    Button restartButton = new Button("RESTART (R)");
 
     public static void main(String[] args) {
         launch(args);
@@ -81,6 +82,10 @@ public class Main extends Application {
         ui.add(festiveButton, 0, 13);
         festiveButton.setFocusTraversable(false);
         festiveButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> handleKeyCode(KeyCode.T));
+        ui.add(new Label(" "), 0, 14);
+        ui.add(restartButton, 0, 15);
+        restartButton.setVisible(false);
+        restartButton.setFocusTraversable(false);
 
 
         BorderPane borderPane = new BorderPane();
@@ -129,6 +134,12 @@ public class Main extends Application {
                 break;
             case H:
                 map.getPlayer().consumeHpBottle();
+                refresh();
+                break;
+            case R:
+                currentLevel = 0;
+                enemies = new ArrayList<>();
+                map = MapLoader.loadMap(enemies, maps[currentLevel]);
                 refresh();
                 break;
         }
@@ -192,5 +203,6 @@ public class Main extends Application {
                 "Empty" :
                 map.getPlayer().getEquipmentName("hand")));
         festiveText.setText("" + (!isFestive ? "Feeling festive? " : "Fuck christmas? "));
+        restartButton.setVisible(currentLevel > 1);
     }
 }
