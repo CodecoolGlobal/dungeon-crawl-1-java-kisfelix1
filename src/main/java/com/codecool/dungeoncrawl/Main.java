@@ -86,6 +86,7 @@ public class Main extends Application {
         ui.add(restartButton, 0, 15);
         restartButton.setVisible(false);
         restartButton.setFocusTraversable(false);
+        restartButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> handleKeyCode(KeyCode.R));
 
 
         BorderPane borderPane = new BorderPane();
