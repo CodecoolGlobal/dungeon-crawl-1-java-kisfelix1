@@ -12,7 +12,7 @@ public class Skeleton extends Enemy {
     public void aiMove() {
         int randomX = random.nextInt(-1,2);
         int randomY = random.nextInt(-1,2);
-        if (!(randomX == 0 && randomY ==0)) {
+        if (!(randomX == 0 && randomY ==0) && !(Math.abs(randomX) == 1 && Math.abs(randomY) == 1)) {
             move(randomX, randomY);
         }
     }
