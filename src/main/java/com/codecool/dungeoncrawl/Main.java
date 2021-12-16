@@ -38,6 +38,8 @@ public class Main extends Application {
     Label handLabel = new Label();
     Button pickUpButton = new Button("Pick Up Item (F)");
     Button usePotionButton = new Button("Use Potion (H)");
+    Button festiveButton = new Button("CLICK ME (T)");
+    Label festiveText = new Label();
 
     public static void main(String[] args) {
         launch(args);
@@ -71,6 +73,11 @@ public class Main extends Application {
         ui.add(usePotionButton, 0, 10);
         usePotionButton.setFocusTraversable(false);
         usePotionButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> handleKeyCode(KeyCode.H));
+        ui.add(new Label(" "), 0, 11);
+        ui.add(festiveText, 0, 12);
+        ui.add(festiveButton, 0, 13);
+        festiveButton.setFocusTraversable(false);
+        festiveButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> handleKeyCode(KeyCode.T));
 
 
         BorderPane borderPane = new BorderPane();
@@ -161,5 +168,6 @@ public class Main extends Application {
         handLabel.setText("" + (map.getPlayer().getEquipment("hand") == null ?
                 "Empty" :
                 map.getPlayer().getEquipmentName("hand")));
+        festiveText.setText("" + (!isFestive ? "Feeling festive? " : "Fuck christmas? "));
     }
 }
