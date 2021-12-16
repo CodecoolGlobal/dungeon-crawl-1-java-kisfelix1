@@ -95,4 +95,7 @@ public class Player extends Actor {
         }
         this.equipment.put(equippable.getEquipmentSlot(), (Item)equippable);
     }
+    public boolean isAlive(){
+        return health > 0;
+    }
 }
