@@ -40,6 +40,7 @@ public class Tiles {
         tileMap.put("ghost", new Tile(27, 6));
         tileMap.put("protector", new Tile(30, 6));
         tileMap.put("christmasTree", new Tile(1, 1));
+        tileMap.put("stair", new Tile(3, 6));
     }
 
     public static void drawTile(GraphicsContext context, Drawable d, int x, int y, boolean isFestive) {

@@ -1,6 +1,7 @@
 package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.logic.Cell;
+import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.actors.Enemy;
@@ -22,11 +23,13 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 
 public class Main extends Application {
+    private final static String[] maps = {"/map.txt", "/map2.txt"};
+    private int currentLevel = 0;
     int centerX;
     int centerY;
     private boolean isFestive = false;
     ArrayList<Enemy> enemies = new ArrayList<>();
-    GameMap map = MapLoader.loadMap(enemies);
+    GameMap map = MapLoader.loadMap(enemies, maps[currentLevel]);
     Canvas canvas = new Canvas(
             Math.min(map.getWidth(), 45) * Tiles.TILE_WIDTH,
             Math.min(map.getHeight(), 45) * Tiles.TILE_WIDTH);
@@ -131,6 +134,16 @@ public class Main extends Application {
         }
         cleanDeadEnemies();
         enemies.forEach(enemy -> enemy.aiMove());
+        checkStairs();
+    }
+
+    private void checkStairs() {
+        if(map.getPlayer().getCell().getType().equals(CellType.STAIR)){
+            currentLevel++;
+            enemies = new ArrayList<>();
+            map = MapLoader.loadMap(enemies, maps[currentLevel]);
+            refresh();
+        }
     }
 
     private void cleanDeadEnemies() {
