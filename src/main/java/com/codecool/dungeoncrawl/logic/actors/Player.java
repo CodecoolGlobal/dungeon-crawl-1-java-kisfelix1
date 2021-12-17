@@ -8,8 +8,8 @@ import java.util.HashMap;
 
 public class Player extends Actor {
     private final String name = "Hero";
-    private final HashMap<String, Item> equipment = new HashMap<>() {{
-        put("hand", null);
+    private final HashMap<SlotType, Item> equipment = new HashMap<>() {{
+        put(SlotType.HAND, null);
     }};
     private final ArrayList<Item> inventory = new ArrayList<>();
 
@@ -40,11 +40,12 @@ public class Player extends Actor {
     }
 
     public void pickUpItem() {
-        if (cell.getItem() != null) {
-            if (cell.getItem() instanceof Equippable) {
-                setEquipment((Equippable)cell.getItem());
+        Item item = cell.getItem();
+        if (item != null) {
+            if (item instanceof Equippable) {
+                setEquipment((Equippable)item);
             } else {
-                giveToInventory(cell.getItem());
+                giveToInventory(item);
                 cell.deleteItem();
             }
         }
@@ -53,7 +54,7 @@ public class Player extends Actor {
     public int getPotionNumber() {
         int res = 0;
         for (Item item : inventory) {
-            if (item.getClass() == Potion.class) {
+            if (item instanceof Potion) {
                 res++;
             }
         }
@@ -61,7 +62,7 @@ public class Player extends Actor {
     }
     public boolean isHaveKey() {
         for (Item item : inventory) {
-            if (item.getClass() == Key.class) {
+            if (item instanceof Key) {
                 return true;
             }
         }
@@ -69,13 +70,13 @@ public class Player extends Actor {
     }
 
     public void removeKey() {
-        int index = 99;  // For IntelliJ's fear from this index integer might be not initialized I gave it a random number
         for (Item item : inventory) {
-            if (item.getClass() == Key.class) {
-                index = inventory.indexOf(item);
+            if (item instanceof Key) {
+                int index = inventory.indexOf(item);
+                inventory.remove(index);
             }
         }
-        inventory.remove(index);
+
     }
 
     public Item getEquipment(String equipmentPart) {
@@ -87,13 +88,14 @@ public class Player extends Actor {
     }
 
     public void setEquipment(Equippable equippable) {
-        if (this.equipment.get(equippable.getEquipmentSlot()) != null) {
-            cell.setItem(this.equipment.get(equippable.getEquipmentSlot()));
+        SlotType sloth = equippable.getEquipmentSlot();
+        if (this.equipment.get(sloth) != null) {
+            this.cell.setItem(this.equipment.get(sloth));
         }
         else{
-            cell.deleteItem();
+            this.cell.deleteItem();
         }
-        this.equipment.put(equippable.getEquipmentSlot(), (Item)equippable);
+        this.equipment.put(sloth, (Item)equippable);
     }
     public boolean isAlive(){
         return health > 0;

@@ -7,8 +7,6 @@ public class Key extends Item implements Consumable {
 
     public Key(Cell cell) {
         super(cell);
-        cell.setItem(this);
-
     }
 
     @Override

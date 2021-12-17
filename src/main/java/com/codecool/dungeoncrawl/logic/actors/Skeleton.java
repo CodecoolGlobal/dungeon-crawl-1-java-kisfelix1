@@ -10,8 +10,8 @@ public class Skeleton extends Enemy {
 
     @Override
     public void aiMove() {
-        int randomX = random.nextInt(-1,2);
-        int randomY = random.nextInt(-1,2);
+        int randomX = random.nextInt(2);
+        int randomY = random.nextInt(2);
         if (!(randomX == 0 && randomY ==0) && !(Math.abs(randomX) == 1 && Math.abs(randomY) == 1)) {
             move(randomX, randomY);
         }

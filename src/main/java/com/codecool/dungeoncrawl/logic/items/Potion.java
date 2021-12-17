@@ -7,7 +7,6 @@ public class Potion extends Item implements Consumable{
 
     public Potion(Cell cell) {
         super(cell);
-        cell.setItem(this);
     }
 
     public String getTileName() {

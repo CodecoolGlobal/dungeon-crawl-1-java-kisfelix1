@@ -23,7 +23,7 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 
 public class Main extends Application {
-    private final static String[] maps = {"/map.txt", "/map2.txt", "/win.txt", "/lose.txt"};
+    private final static MapLevel[] maps = {MapLevel.FIRST_MAP, MapLevel.SECOND_MAP, MapLevel.WIN_MAP, MapLevel.WIN_MAP };
     private int currentLevel = 0;
     int centerX;
     int centerY;
@@ -111,51 +111,43 @@ public class Main extends Application {
         switch (keyCode) {
             case UP:
                 map.getPlayer().move(0, -1);
-                refresh();
                 break;
             case DOWN:
                 map.getPlayer().move(0, 1);
-                refresh();
                 break;
             case LEFT:
                 map.getPlayer().move(-1, 0);
-                refresh();
                 break;
             case RIGHT:
                 map.getPlayer().move(1, 0);
-                refresh();
                 break;
             case F:
                 map.getPlayer().pickUpItem();
-                refresh();
                 break;
             case T:
                 isFestive = !isFestive;
-                refresh();
                 break;
             case H:
                 map.getPlayer().consumeHpBottle();
-                refresh();
                 break;
             case R:
                 currentLevel = 0;
                 enemies = new ArrayList<>();
                 map = MapLoader.loadMap(enemies, maps[currentLevel]);
-                refresh();
                 break;
         }
         cleanDeadEnemies();
         enemies.forEach(enemy -> enemy.aiMove());
         checkStairs();
         checkPlayerHealth();
+        refresh();
+
     }
 
     private void checkPlayerHealth() {
         if(!map.getPlayer().isAlive()){
             enemies = new ArrayList<>();
-            currentLevel = 3;
-            map = MapLoader.loadMap(enemies, maps[currentLevel]);
-            refresh();
+            map = MapLoader.loadMap(enemies, MapLevel.LOSE_MAP);
         }
     }
 
@@ -164,7 +156,6 @@ public class Main extends Application {
             currentLevel++;
             enemies = new ArrayList<>();
             map = MapLoader.loadMap(enemies, maps[currentLevel]);
-            refresh();
         }
     }
 

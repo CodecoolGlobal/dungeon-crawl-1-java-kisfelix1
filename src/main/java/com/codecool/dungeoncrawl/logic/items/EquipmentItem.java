@@ -2,30 +2,32 @@ package com.codecool.dungeoncrawl.logic.items;
 
 import com.codecool.dungeoncrawl.logic.Cell;
 
-public class Dagger extends Item implements Equippable {
-    public Dagger(Cell cell) {
+public class EquipmentItem extends Item implements Equippable {
+    private EquipmentType type;
+
+    public EquipmentItem(Cell cell, EquipmentType type) {
         super(cell);
-        cell.setItem(this);
+        this.type = type;
     }
 
     @Override
     public String getTileName() {
-        return "dagger";
+        return type.getTileName();
     }
 
     @Override
-    public String getEquipmentSlot() {
-        return "hand";
+    public SlotType getEquipmentSlot() {
+        return type.getSlot();
     }
 
     @Override
     public String getEquipmentName() {
-        return "Dagger";
+        return type.getName();
     }
 
     @Override
     public float getAttackModifier() {
-        return 1.25f;
+        return type.getModifier();
     }
 
     @Override

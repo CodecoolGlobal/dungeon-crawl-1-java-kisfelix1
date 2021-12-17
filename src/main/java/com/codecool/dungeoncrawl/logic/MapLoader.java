@@ -1,5 +1,6 @@
 package com.codecool.dungeoncrawl.logic;
 
+import com.codecool.dungeoncrawl.MapLevel;
 import com.codecool.dungeoncrawl.logic.actors.*;
 import com.codecool.dungeoncrawl.logic.items.*;
 
@@ -8,8 +9,8 @@ import java.util.List;
 import java.util.Scanner;
 
 public class MapLoader {
-    public static GameMap loadMap(List<Enemy> enemies, String mapName) {
-        InputStream is = MapLoader.class.getResourceAsStream(mapName);
+    public static GameMap loadMap(List<Enemy> enemies, MapLevel mapName) {
+        InputStream is = MapLoader.class.getResourceAsStream(mapName.getMapPath());
         Scanner scanner = new Scanner(is);
         int width = scanner.nextInt();
         int height = scanner.nextInt();
@@ -62,11 +63,11 @@ public class MapLoader {
                             break;
                         case 'S':
                             cell.setType(CellType.FLOOR);
-                            new Sword(cell);
+                            new EquipmentItem(cell, EquipmentType.SWORD);
                             break;
                         case 'd':
                             cell.setType(CellType.FLOOR);
-                            new Dagger(cell);
+                            new EquipmentItem(cell, EquipmentType.DAGGER);
                             break;
                         case 'O':
                             cell.setType(CellType.OPEN);
